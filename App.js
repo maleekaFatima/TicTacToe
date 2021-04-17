@@ -1,4 +1,4 @@
-import React, { useState, Console } from 'react';
+import React, { useState, useEffect, Console } from 'react';
 import {
   Text,
   View,
@@ -57,52 +57,53 @@ export default function App() {
       setToPrint('O');
     }
   };
-  const checkWin = () => {
-    if (
-          (button1 == 'X' && button2 == 'X' && button3 == 'X') ||
-          (button4 == 'X' && button5 == 'X' && button6 == 'X') ||
-          (button7 == 'X' && button8 == 'X' && button9 == 'X') ||
-          (button1 == 'X' && button4 == 'X' && button7 == 'X') ||
-          (button2 == 'X' && button5 == 'X' && button8 == 'X') ||
-          (button3 == 'X' && button6 == 'X' && button9 == 'X') ||
-          (button1 == 'X' && button5 == 'X' && button9 == 'X') ||
-          (button3 == 'X' && button5 == 'X' && button7 == 'X')
-        ) {
-          showModel('PLAYER 2 WON');
-        } else if (
-          (button1 == 'O' && button2 == 'O' && button3 == 'O') ||
-          (button4 == 'O' && button5 == 'O' && button6 == 'O') ||
-          (button7 == 'O' && button8 == 'O' && button9 == 'O') ||
-          (button1 == 'O' && button4 == 'O' && button7 == 'O') ||
-          (button2 == 'O' && button5 == 'O' && button8 == 'O') ||
-          (button3 == 'O' && button6 == 'O' && button9 == 'O') ||
-          (button1 == 'O' && button5 == 'O' && button9 == 'O') ||
-          (button3 == 'O' && button5 == 'O' && button7 == 'O')
-        ) {
-          showModel('PLAYER 1 WON');
-        } else if ((button1 == 'O' || button1 == 'X') &&
-        (button2 == 'O' || button2 == 'X') &&
-        (button3 == 'O' || button3 == 'X') &&
-        (button4 == 'O' || button4 == 'X') &&
-        (button5 == 'O' || button5 == 'X') &&
-        (button6 == 'O' || button6 == 'X') &&
-        (button7 == 'O' || button7 == 'X') &&
-        (button8 == 'O' || button8 == 'X') &&
-        (button9 == 'O' || button9 == 'X')
-        ) { showModel('DRAW');
-  }
-  }
 
+  const winner = () => {
+    if (
+      (button1 == 'X' && button2 == 'X' && button3 == 'X') ||
+      (button4 == 'X' && button5 == 'X' && button6 == 'X') ||
+      (button7 == 'X' && button8 == 'X' && button9 == 'X') ||
+      (button1 == 'X' && button4 == 'X' && button7 == 'X') ||
+      (button2 == 'X' && button5 == 'X' && button8 == 'X') ||
+      (button3 == 'X' && button6 == 'X' && button9 == 'X') ||
+      (button1 == 'X' && button5 == 'X' && button9 == 'X') ||
+      (button3 == 'X' && button5 == 'X' && button7 == 'X')
+    ) {
+      showModel('PLAYER 2 WON');
+    } else if (
+      (button1 == 'O' && button2 == 'O' && button3 == 'O') ||
+      (button4 == 'O' && button5 == 'O' && button6 == 'O') ||
+      (button7 == 'O' && button8 == 'O' && button9 == 'O') ||
+      (button1 == 'O' && button4 == 'O' && button7 == 'O') ||
+      (button2 == 'O' && button5 == 'O' && button8 == 'O') ||
+      (button3 == 'O' && button6 == 'O' && button9 == 'O') ||
+      (button1 == 'O' && button5 == 'O' && button9 == 'O') ||
+      (button3 == 'O' && button5 == 'O' && button7 == 'O')
+    ) {
+      showModel('PLAYER 1 WON');
+    } else if (
+      (button1 == 'O' || button1 == 'X') &&
+      (button2 == 'O' || button2 == 'X') &&
+      (button3 == 'O' || button3 == 'X') &&
+      (button4 == 'O' || button4 == 'X') &&
+      (button5 == 'O' || button5 == 'X') &&
+      (button6 == 'O' || button6 == 'X') &&
+      (button7 == 'O' || button7 == 'X') &&
+      (button8 == 'O' || button8 == 'X') &&
+      (button9 == 'O' || button9 == 'X')
+    ) {
+      showModel('DRAW');
+    }
+  };
   const buttonPressed = (button) => {
     if (button == 'O' || button == 'X') {
       Alert.alert('cannot!!');
     } else {
       var currentSymbol = toPrint;
-          printPressable(button, currentSymbol);
-          setTurn(turn + 1);
-          changeTurn();
-          checkWin();
-        
+      printPressable(button, currentSymbol);
+
+      setTurn(turn + 1);
+      changeTurn();
     }
   };
 
@@ -138,9 +139,14 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    if (!viewModal) {
+      winner();
+    }
+  });
+
   return (
     <View style={styles.container}>
-      <Text>turn: {turn}</Text>
       <View style={styles.buttonGrid}>
         <View style={styles.buttonRow}>
           <View style={styles.buttonCover}>
